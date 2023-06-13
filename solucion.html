@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tic Tac Toe</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+		.board {
+			display: flex;
+			flex-wrap: wrap;
+			width: 400px;
+			height: 400px;
+			border: 2px solid black;
+		}
+		.tile {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100px;
+			height: 100px;
+			border: 1px solid black;
+			font-size: 60px;
+			cursor: pointer;
+		}
+		.tile.x {
+			color: blue;
+		}
+		.tile.o {
+			color: red;
+		}
+		.status-bar {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		.active {
+			color: green;
+		}
+		.restart {
+			text-align: center;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="status-bar">
+		Game in progress...
+	</div>
+	<div class="board">
+		<div class="tile" data-row="1" data-col="1"></div>
+		<div class="tile" data-row="1" data-col="2"></div>
+		<div class="tile" data-row="1" data-col="3"></div>
+		<div class="tile" data-row="1" data-col="4"></div>
+		<div class="tile" data-row="2" data-col="1"></div>
+		<div class="tile" data-row="2" data-col="2"></div>
+		<div class="tile" data-row="2" data-col="3"></div>
+		<div class="tile" data-row="2" data-col="4"></div>
+		<div class="tile" data-row="3" data-col="1"></div>
+		<div class="tile" data-row="3" data-col="2"></div>
+		<div class="tile" data-row="3" data-col="3"></div>
+		<div class="tile" data-row="3" data-col="4"></div>
+		<div class="tile" data-row="4" data-col="1"></div>
+		<div class="tile" data-row="4" data-col="2"></div>
+		<div class="tile" data-row="4" data-col="3"></div>
+		<div class="tile" data-row="4" data-col="4"></div>
+	</div>
+	<div class="player-labels">
+		<div class="player1-label active">
+			Player 1 (X)
+		</div>
+		<div class="player2-label">
+			Player 2 (O)
+		</div>
+	</div>
+	<div class="restart">
+		<button id="restart-btn">Restart</button>
+	</div>
+	<script>
+		// Selecting DOM elements
+		const tiles = document.querySelectorAll('.tile');
+		const player1Label = document.querySelector('.player1-label');
+		const player2Label = document.querySelector('.player2-label');
+		const restartBtn = document.querySelector('#restart-btn')
+		const statusbar = document.querySelector('.status-bar')
+
+		// Game variables
+		let currentPlayer = 1;
+		let winner = null;
+		let moves = 0;
+		let xMoves = [ [], [], [], [] ]
+		let oMoves = [ [], [], [], [] ]
+		let winCombos = [
+			[1,2,3,4], [5,6,7,8], [9,10,11,12], [13,14,15,16], // horizontal
+			[1,5,9,13], [2,6,10,14], [3,7,11,15], [4,8,12,16], // vertical
+			[1,6,11,16], [4,7,10,13] // square
+		];
+
+		// Functions
+		function handleMove(e) {
+			if (winner !== null) {
+				return;
+			}
+			const tile = e.target;
+			const row = parseInt(tile.getAttribute('data-row'));
+			const col = parseInt(tile.getAttribute('data-col'));
+			const markings = (currentPlayer === 1) ? xMoves : oMoves;
+			const otherMarkings = (currentPlayer === 1) ? oMoves : xMoves;
+
+			if (isNaN(row) || isNaN(col) || tile.classList.contains('x') || tile.classList.contains('o')) {
+				return;
+			}
+			tile.classList.add((currentPlayer === 1) ? 'x' : 'o');
+			markings[row-1].push(col)
+			moves++;}
+
+		
