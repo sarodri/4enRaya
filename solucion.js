@@ -1,9 +1,4 @@
-//variable global para llevar el registro del turn actual
-var turn = "x";
-var playerX = [];
-var playerO = [];
-let contador = 0;
-
+// TO-DO: Implement game below
 
 function getTiles(){
     return document.getElementsByClassName('tile')
@@ -16,19 +11,26 @@ function getPlayers(){
 }
 const players = getPlayers()
 
+var turn = "x";
+var playerX = [];
+var playerO = [];
+let contador = 0;
+let huboGanador = false;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById("restart-btn").style = 'display:none';
-    players[0].classList.remove("active")
+    players[0].classList.add("active")
 })
 
 // Función para cambiar el turno después de cada jugada
 function cambiarTurno() {
   if (turn === "x") {
+    document.getElementsByClassName('tile').innerHTML = "o"
     turn = "o";
     players[1].classList.add("active")
     players[0].classList.remove("active")
   } else {
+    document.getElementsByClassName('tile').innerHTML = "x"
     turn = "x";
     players[0].classList.add("active")
     players[1].classList.remove("active")
@@ -48,15 +50,13 @@ function marcarCasilla(tiles) {
 }
 
 function setStatus(string) {
-  document.getElementById("status").innerText = string;
+  document.getElementById("status").innerHTML = string;
 }
-
-// Función para comprobar si hay un ganador
 
 
 // Función para reiniciar el juego
 function reiniciarJuego() {
-   
+huboGanador = false
 players[0].classList.add("active")
 players[1].classList.remove("active")
 
@@ -73,9 +73,9 @@ players[1].classList.remove("active")
   }
 
   // Reiniciamos la variable de turn
-  turn = "X";
+  turn = "x";
 
-  document.getElementById("status").innerText = "Game in progress..";
+  document.getElementById("status").innerHTML = "Game in progress...";
   document.getElementById("restart-btn").style = 'display:none';
 }
 
@@ -83,11 +83,17 @@ players[1].classList.remove("active")
 
 for (var i = 0; i < tiles.length; i++) {
   tiles[i].addEventListener("click", function () {
+    if (huboGanador==true){
+        return
+    }
     marcarCasilla(this);
     clicarCasilla(this);
     incrementarContador();
     hayGanador();
-    cambiarTurno();
+    if (huboGanador==false){
+        console.log("cambiar turno")
+        cambiarTurno();
+    }
   });
 }
 
@@ -138,23 +144,22 @@ function hayGanador() {
    
         if (turn === "x" && checkComb(playerX.map(Number), element)){
             setStatus("Player 1 won!");
+            huboGanador = true
             document.getElementById("restart-btn").style = 'display:block';
                 return
         }
         if (turn === "o" && checkComb(playerO.map(Number), element)){
             setStatus("Player 2 won!");
+            huboGanador = true
             document.getElementById("restart-btn").style = 'display:block';
                 return
         }else if(contador == 16){
             setStatus("Draw!")
             document.getElementById("restart-btn").style = 'display:block';
         }
-    
        
     });
   }
-
-
 
   let checkComb = (array1, array2) => {
     return array2.every((x) => {
