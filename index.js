@@ -1,15 +1,13 @@
-// TO-DO: Implement game below
-
-function getTiles(){
+function obtenerCeldas(){
     return document.getElementsByClassName('tile')
 }
-const tiles = getTiles()
+const tiles = obtenerCeldas()
 
 
-function getPlayers(){
+function obtenerJugador(){
     return document.getElementsByClassName('player')
 }
-const players = getPlayers()
+const players = obtenerJugador()
 
 var turn = "x";
 var playerX = [];
@@ -60,8 +58,6 @@ huboGanador = false
 players[0].classList.add("active")
 players[1].classList.remove("active")
 
-// document.getElementById("player1").classList.add("active")
-// document.getElementById("player2").classList.remove("active")
   playerO = [];
   playerX = [];
   contador = 0;
